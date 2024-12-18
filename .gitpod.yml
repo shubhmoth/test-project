@@ -1,0 +1,32 @@
+# Specify the Gitpod image with Node.js and Python
+image: gitpod/workspace-full:latest
+
+tasks:
+  - name: Install Frontend Dependencies
+    init: |
+      cd frontend
+      npm install
+    command: |
+      cd frontend
+      npm start
+  - name: Install Backend Dependencies
+    init: |
+      cd backend
+      python3 -m venv venv
+      source venv/bin/activate
+      pip install fastapi uvicorn
+    command: |
+      cd backend
+      source venv/bin/activate
+      uvicorn main:app --reload --host 0.0.0.0 --port 8000
+
+ports:
+  - port: 3000           # React frontend
+    onOpen: open-browser
+  - port: 8000           # FastAPI backend
+    onOpen: open-preview
+
+vscode:
+  extensions:
+    - ms-python.python   # Python extension for VS Code
+    - dbaeumer.vscode-eslint # ESLint for JS
